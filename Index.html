@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Quick Reference — Nishanth</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--card:#21253a;--border:#2e3250;
+  --text:#e8eaf6;--muted:#8b90b8;--accent:#50fa7b;--accent-bg:#0d2318;
+  --green:#4caf7d;--green-bg:#0d2318;--red:#f06b6b;--red-bg:#2a1010;
+  --yellow:#f1fa8c;--yellow-bg:#2a2800;--purple:#bd93f9;--purple-bg:#1a1030;
+  --pink:#ff79c6;--code-bg:#131520;--radius:8px;
+  --font:system-ui,-apple-system,sans-serif;--mono:'Courier New',monospace
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;font-size:15px;line-height:1.6}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.header h1{font-size:16px;font-weight:600}
+.badge{font-size:11px;background:var(--accent-bg);padding:2px 8px;border-radius:20px;border:1px solid var(--accent);color:var(--accent)}
+.nav-wrap{background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.nav-wrap::-webkit-scrollbar{display:none}
+.nav{display:flex;gap:4px;padding:8px 12px;white-space:nowrap}
+.nav button{font-size:12px;padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;font-family:var(--font)}
+.nav button.active{background:var(--accent-bg);color:var(--accent);border-color:var(--accent)}
+.nav button:hover:not(.active){background:var(--card);color:var(--text)}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+.section{display:none}.section.active{display:block}
+.section-title{font-size:20px;font-weight:600;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.card-title{font-size:12px;font-weight:700;margin-bottom:8px;color:var(--accent);text-transform:uppercase;letter-spacing:0.6px}
+.rule{font-size:13px;color:var(--muted);margin-bottom:10px;line-height:1.7}
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-size:12px;font-family:var(--mono);overflow-x:auto;color:var(--text);line-height:1.9;margin-top:8px;-webkit-overflow-scrolling:touch}
+.kw{color:#ff79c6}.fn{color:#50fa7b}.st{color:#f1fa8c}.cm{color:#4a5080;font-style:italic}.nm{color:#bd93f9}.ok{color:#4caf7d}.err{color:#f06b6b}
+table.ref{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+table.ref th{text-align:left;color:var(--muted);font-weight:600;padding:8px 10px;background:var(--code-bg);border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.4px}
+table.ref td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:top;font-size:13px}
+table.ref td:first-child{color:var(--text);font-family:var(--mono);font-size:12px}
+table.ref tr:last-child td{border-bottom:none}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;margin-right:4px;margin-bottom:4px;font-weight:600}
+.tag.green{background:var(--green-bg);color:var(--green);border:1px solid var(--green)}
+.tag.red{background:var(--red-bg);color:var(--red);border:1px solid var(--red)}
+.tag.yellow{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow)}
+.highlight{background:var(--accent-bg);border:1px solid var(--accent);border-radius:var(--radius);padding:10px 14px;font-size:13px;color:var(--accent);margin-bottom:12px}
+.warn{background:var(--yellow-bg);border:1px solid var(--yellow);border-radius:var(--radius);padding:10px 14px;font-size:13px;color:var(--yellow);margin-bottom:12px}
+.good{background:var(--green-bg);border:1px solid var(--green);border-radius:var(--radius);padding:10px 14px;font-size:13px;color:var(--green);margin-bottom:12px}
+.error-box{background:var(--red-bg);border:1px solid var(--red);border-radius:var(--radius);padding:12px 14px;margin-bottom:8px}
+.error-box .err-title{color:var(--red);font-size:12px;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.error-box .err-msg{color:#ffaaaa;font-family:var(--mono);font-size:12px;margin-bottom:8px;padding:6px 8px;background:#1a0808;border-radius:4px}
+.error-box .err-fix{color:var(--muted);font-size:13px}
+.cheat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.decision{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;font-size:13px}
+.decision span{color:var(--muted);font-size:12px;display:block;margin-bottom:4px}
+.decision strong{color:var(--accent);font-weight:600}
+.step{display:flex;gap:12px;margin-bottom:12px}
+.step-num{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px}
+.step-content{flex:1}
+.step-content strong{color:var(--text);font-size:13px;display:block}
+.step-content p{color:var(--muted);font-size:13px;margin-top:2px}
+@media(max-width:600px){.cheat{grid-template-columns:1fr 1fr}}
+@media(max-width:380px){.cheat{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🐍 Python Quick Reference</h1>
+  <span class="badge">Indium Interview — July 11</span>
+</div>
+
+<div class="nav-wrap"><div class="nav" id="nav">
+  <button class="active" onclick="show('basics')">Basics</button>
+  <button onclick="show('errors')">Error Debugger</button>
+  <button onclick="show('donts')">Do's &amp; Don'ts</button>
+  <button onclick="show('logic')">Logic Questions</button>
+  <button onclick="show('lambda')">Lambda</button>
+  <button onclick="show('mapfilter')">Map/Filter/Sorted</button>
+  <button onclick="show('listcomp')">List Comprehension</button>
+  <button onclick="show('strings')">Strings</button>
+  <button onclick="show('dicts')">Dict &amp; Sets</button>
+  <button onclick="show('pandas')">Pandas</button>
+  <button onclick="show('numpy')">Numpy</button>
+  <button onclick="show('automation')">Automation</button>
+  <button onclick="show('behavior')">How Python Behaves</button>
+  <button onclick="show('cheat')">Cheat Sheet</button>
+</div></div>
+
+<div class="wrap">
+
+<!-- BASICS -->
+<div id="basics" class="section active">
+  <div class="section-title">Python basics — structure and syntax</div>
+  <div class="card">
+    <div class="card-title">Function structure</div>
+    <pre><span class="kw">def</span> <span class="fn">function_name</span>(param1, param2):
+    <span class="cm"># logic here</span>
+    <span class="kw">return</span> result
+
+<span class="cm"># Call it</span>
+result = <span class="fn">function_name</span>(<span class="nm">10</span>, <span class="nm">20</span>)</pre>
+  </div>
+  <div class="card">
+    <div class="card-title">If / elif / else</div>
+    <pre><span class="kw">if</span> condition:
+    <span class="cm"># do this</span>
+<span class="kw">elif</span> other_condition:
+    <span class="cm"># do this</span>
+<span class="kw">else</span>:
+    <span class="cm"># fallback</span>
+
+<span class="cm"># One-liner ternary</span>
+result = <span class="st">'Pass'</span> <span class="kw">if</span> score >= <span class="nm">60</span> <span class="kw">else</span> <span class="st">'Fail'</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Loops</div>
+    <pre><span class="cm"># For loop over list</span>
+<span class="kw">for</span> item <span class="kw">in</span> my_list:
+    <span class="fn">print</span>(item)
+
+<span class="cm"># For loop with index</span>
+<span class="kw">for</span> i, item <span class="kw">in</span> <span class="fn">enumerate</span>(my_list):
+    <span class="fn">print</span>(i, item)
+
+<span class="cm"># Range loop</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">1</span>, n+<span class="nm">1</span>):   <span class="cm"># n+1 to include n</span>
+    <span class="fn">print</span>(i)
+
+<span class="cm"># While loop</span>
+<span class="kw">while</span> condition:
+    <span class="cm"># do something</span>
+    <span class="cm"># remember to update condition or infinite loop!</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Data types at a glance</div>
+    <table class="ref">
+      <tr><th>Type</th><th>Example</th><th>Mutable?</th><th>Notes</th></tr>
+      <tr><td>int</td><td>x = 5</td><td>No</td><td>Whole numbers</td></tr>
+      <tr><td>float</td><td>x = 3.14</td><td>No</td><td>Decimal numbers</td></tr>
+      <tr><td>str</td><td>x = "hello"</td><td>No</td><td>Text</td></tr>
+      <tr><td>bool</td><td>x = True</td><td>No</td><td>True or False only</td></tr>
+      <tr><td>list</td><td>x = [1,2,3]</td><td>Yes</td><td>Ordered, allows duplicates</td></tr>
+      <tr><td>tuple</td><td>x = (1,2,3)</td><td>No</td><td>Ordered, immutable</td></tr>
+      <tr><td>dict</td><td>x = {'a':1}</td><td>Yes</td><td>Key-value pairs</td></tr>
+      <tr><td>set</td><td>x = {1,2,3}</td><td>Yes</td><td>Unordered, no duplicates</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Common operators</div>
+    <pre><span class="cm"># Comparison</span>
+== != > < >= <=
+
+<span class="cm"># Logical</span>
+<span class="kw">and</span>   <span class="kw">or</span>   <span class="kw">not</span>
+
+<span class="cm"># Math</span>
++  -  *  /    <span class="cm"># basic</span>
+//             <span class="cm"># floor division (10//3 = 3)</span>
+%              <span class="cm"># modulus/remainder (10%3 = 1)</span>
+**             <span class="cm"># power (2**3 = 8)</span>
+
+<span class="cm"># Assignment shortcuts</span>
+x += <span class="nm">1</span>   <span class="cm"># x = x + 1</span>
+x *= <span class="nm">2</span>   <span class="cm"># x = x * 2</span></pre>
+  </div>
+</div>
+
+<!-- ERROR DEBUGGER -->
+<div id="errors" class="section">
+  <div class="section-title">Error Debugger — what each error means</div>
+
+  <div class="error-box">
+    <div class="err-title">❌ IndentationError</div>
+    <div class="err-msg">IndentationError: expected an indented block / unexpected indent</div>
+    <div class="err-fix">Cause: Wrong or inconsistent spaces/tabs for indentation.<br>Fix: Use 4 spaces consistently. Never mix tabs and spaces.</div>
+    <pre><span class="err"># WRONG</span>
+<span class="kw">def</span> <span class="fn">my_func</span>():
+<span class="fn">print</span>(<span class="st">'hi'</span>)   <span class="err">-- ❌ not indented</span>
+<span class="ok"># CORRECT</span>
+<span class="kw">def</span> <span class="fn">my_func</span>():
+    <span class="fn">print</span>(<span class="st">'hi'</span>)   <span class="ok">-- ✅ 4 spaces</span></pre>
+  </div>
+
+  <div class="error-box">
+    <div class="err-title">❌ NameError</div>
+    <div class="err-msg">NameError: name 'x' is not defined</div>
+    <div class="err-fix">Cause: Using a variable before assigning it, or typo in variable name.<br>Fix: Define the variable before using it. Check spelling.</div>
+    <pre><span class="err"># WRONG — using before defining</span>
+<span class="fn">print</span>(result)   <span class="err">-- ❌ result not defined yet</span>
+result = <span class="nm">10</span>
+<span class="ok"># CORRECT</span>
+result = <span class="nm">10</span>
+<span class="fn">print</span>(result)   <span class="ok">-- ✅</span></pre>
+  </div>
+
+  <div class="error-box">
+    <div class="err-title">❌ TypeError</div>
+    <div class="err-msg">TypeError: can only concatenate str (not "int") to str</div>
+    <div class="err-fix">Cause: Mixing incompatible types — like adding string and integer.<br>Fix: Convert types explicitly using str(), int(), float().</div>
+    <pre><span class="err"># WRONG</span>
+<span class="fn">print</span>(<span class="st">"Score: "</span> + <span class="nm">90</span>)     <span class="err">-- ❌ str + int</span>
+<span class="ok"># CORRECT</span>
+<span class="fn">print</span>(<span class="st">"Score: "</span> + <span class="fn">str</span>(<span class="nm">90</span>))  <span class="ok">-- ✅ convert to str</span>
+<span class="fn">print</span>(<span class="fn">f</span><span class="st">"Score: {90}"</span>)       <span class="ok">-- ✅ f-string (better)</span></pre>
+  </div>
+
+  <div class="error-box">
+    <div class="err-title">❌ IndexError</div>
+    <div class="err-msg">IndexError: list index out of range</div>
+    <div class="err-fix">Cause: Accessing index that doesn't exist. List of 3 items has indices 0,1,2 only.<br>Fix: Check len() before accessing. Use -1 for last element.</div>
+    <pre><span class="err"># WRONG</span>
+arr = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>]
+arr[<span class="nm">3</span>]   <span class="err">-- ❌ index 3 doesn't exist (max is 2)</span>
+<span class="ok"># CORRECT</span>
+arr[<span class="nm">2</span>]    <span class="ok">-- ✅ last element</span>
+arr[-<span class="nm">1</span>]   <span class="ok">-- ✅ last element shortcut</span></pre>
+  </div>
+
+  <div class="error-box">
+    <div class="err-title">❌ KeyError</div>
+    <div class="err-msg">KeyError: 'name'</div>
+    <div class="err-fix">Cause: Accessing dict key that doesn't exist.<br>Fix: Use .get() which returns None instead of error, or check key exists first.</div>
+    <pre><span class="err"># WRONG</span>
+d = {<span class="st">'age'</span>: <span class="nm">25</span>}
+d[<span class="st">'name'</span>]         <span class="err">-- ❌ 'name' key doesn't exist</span>
+<span class="ok"># CORRECT</span>
+d.<span class="fn">get</span>(<span class="st">'name'</span>)      <span class="ok">-- ✅ returns None if missing</span>
+d.<span class="fn">get</span>(<span class="st">'name'</span>, <span class="st">'N/A'</span>) <span class="ok">-- ✅ returns 'N/A' if missing</span></pre>
+  </div>
+
+  <div class="error-box">
+    <div class="err-title">❌ AttributeError</div>
+    <div class="err-msg">AttributeError: 'list' object has no attribute 'upper'</div>
+    <div class="err-fix">Cause: Calling a method that doesn't belong to that data type.<br>Fix: Check data type first. .upper() is for strings, not lists.</div>
+    <pre><span class="err"># WRONG</span>
+my_list = [<span class="st">'a'</span>, <span class="st">'b'</span>]
+my_list.<span class="fn">upper</span>()   <span class="err">-- ❌ lists don't have .upper()</span>
+<span class="ok"># CORRECT</span>
+my_str = <span class="st">'hello'</span>
+my_str.<span class="fn">upper</span>()    <span class="ok">-- ✅ strings have .upper()</span></pre>
+  </div>
+
+  <div class="error-box">
+    <div class="err-title">❌ SyntaxError — = vs ==</div>
+    <div class="err-msg">SyntaxError: invalid syntax</div>
+    <div class="err-fix">Cause: Using single = (assignment) instead of == (comparison) in if statement.<br>Fix: Always use == for comparison.</div>
+    <pre><span class="err"># WRONG</span>
+<span class="kw">if</span> x = <span class="nm">5</span>:    <span class="err">-- ❌ = is assignment, not comparison</span>
+<span class="ok"># CORRECT</span>
+<span class="kw">if</span> x == <span class="nm">5</span>:   <span class="ok">-- ✅ == is comparison</span></pre>
+  </div>
+
+  <div class="error-box">
+    <div class="err-title">❌ Return inside loop</div>
+    <div class="err-msg">No error — but function returns too early (only processes first element)</div>
+    <div class="err-fix">Cause: return inside for loop exits function on first iteration.<br>Fix: Update a variable inside the loop. return AFTER the loop finishes.</div>
+    <pre><span class="err"># WRONG — returns after first vowel only</span>
+<span class="kw">for</span> i <span class="kw">in</span> s:
+    <span class="kw">if</span> i <span class="kw">in</span> vowels:
+        <span class="kw">return</span> count + <span class="nm">1</span>   <span class="err">-- ❌ exits on first vowel</span>
+<span class="ok"># CORRECT — count all, return after loop</span>
+<span class="kw">for</span> i <span class="kw">in</span> s:
+    <span class="kw">if</span> i <span class="kw">in</span> vowels:
+        count += <span class="nm">1</span>   <span class="ok">-- ✅ accumulate</span>
+<span class="kw">return</span> count          <span class="ok">-- ✅ return after loop</span></pre>
+  </div>
+
+  <div class="error-box">
+    <div class="err-title">❌ Mutable default argument</div>
+    <div class="err-msg">No error — but function behaves strangely across calls</div>
+    <div class="err-fix">Cause: Using a mutable object like [] as default parameter. It's shared across all calls.<br>Fix: Use None as default, create the object inside the function.</div>
+    <pre><span class="err"># WRONG — list is shared across all calls!</span>
+<span class="kw">def</span> <span class="fn">add_item</span>(item, lst=[]):
+    lst.<span class="fn">append</span>(item)
+    <span class="kw">return</span> lst
+<span class="ok"># CORRECT</span>
+<span class="kw">def</span> <span class="fn">add_item</span>(item, lst=<span class="kw">None</span>):
+    <span class="kw">if</span> lst <span class="kw">is None</span>:
+        lst = []
+    lst.<span class="fn">append</span>(item)
+    <span class="kw">return</span> lst</pre>
+  </div>
+</div>
+
+<!-- DOS AND DONTS -->
+<div id="donts" class="section">
+  <div class="section-title">Python Do's and Don'ts</div>
+  <div class="card">
+    <div class="card-title">Comparison and logic</div>
+    <table class="ref">
+      <tr><th>❌ Don't</th><th>✅ Do</th><th>Why</th></tr>
+      <tr><td>if x = 5:</td><td>if x == 5:</td><td>= is assignment, == is comparison</td></tr>
+      <tr><td>if x == True:</td><td>if x:</td><td>Pythonic — truthy/falsy</td></tr>
+      <tr><td>if x == None:</td><td>if x is None:</td><td>None comparison uses is not ==</td></tr>
+      <tr><td>if len(lst) == 0:</td><td>if not lst:</td><td>Empty list is falsy</td></tr>
+      <tr><td>not x == 5</td><td>x != 5</td><td>Cleaner and more readable</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Functions and return</div>
+    <table class="ref">
+      <tr><th>❌ Don't</th><th>✅ Do</th><th>Why</th></tr>
+      <tr><td>return inside loop too early</td><td>Accumulate, return after loop</td><td>Early return misses most elements</td></tr>
+      <tr><td>No return statement</td><td>Always explicit return</td><td>Function returns None silently</td></tr>
+      <tr><td>Mutable default args (def f(x=[]))</td><td>Use None, create inside</td><td>Shared across all calls — bug</td></tr>
+      <tr><td>Modifying list while iterating</td><td>Iterate copy: for x in lst[:]</td><td>Skips elements unpredictably</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Strings</div>
+    <table class="ref">
+      <tr><th>❌ Don't</th><th>✅ Do</th><th>Why</th></tr>
+      <tr><td>"Score: " + str(score)</td><td>f"Score: {score}"</td><td>f-strings cleaner and faster</td></tr>
+      <tr><td>s[i] when looping for i in s</td><td>for char in s: use char directly</td><td>i is already the character</td></tr>
+      <tr><td>s == reversed(s)</td><td>s == s[::-1]</td><td>reversed() returns iterator not string</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Lists and iteration</div>
+    <table class="ref">
+      <tr><th>❌ Don't</th><th>✅ Do</th><th>Why</th></tr>
+      <tr><td>for i in range(len(lst)): lst[i]</td><td>for item in lst: item</td><td>Direct iteration is cleaner</td></tr>
+      <tr><td>result = [] then append in loop</td><td>List comprehension</td><td>Faster and more Pythonic</td></tr>
+      <tr><td>sorted(lst, key=lambda x: x[1], reverse=False)</td><td>sorted(lst, key=lambda x: x[1])</td><td>Default is already ascending</td></tr>
+      <tr><td>arr[0] without checking length</td><td>if arr: arr[0]</td><td>Empty list = IndexError</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- LOGIC QUESTIONS -->
+<div id="logic" class="section">
+  <div class="section-title">Logic questions — write from memory</div>
+  <div class="card">
+    <div class="card-title">Maximum in array — without max()</div>
+    <pre><span class="kw">def</span> <span class="fn">find_max</span>(arr):
+    result = arr[<span class="nm">0</span>]   <span class="cm"># start with first element</span>
+    <span class="kw">for</span> i <span class="kw">in</span> arr:
+        <span class="kw">if</span> i > result:
+            result = i
+    <span class="kw">return</span> result</pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Second largest — without sorted()</div>
+    <pre><span class="kw">def</span> <span class="fn">second_largest</span>(arr):
+    first = second = <span class="fn">float</span>(<span class="st">'-inf'</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> arr:
+        <span class="kw">if</span> i > first:
+            second = first   <span class="cm"># old first drops down</span>
+            first = i
+        <span class="kw">elif</span> first > i > second:
+            second = i
+    <span class="kw">return</span> second
+<span class="cm"># float('-inf') = negative infinity, any number beats it</span>
+<span class="cm"># handles duplicates: [5,5,3] returns 3 not 5</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Palindrome check</div>
+    <pre><span class="kw">def</span> <span class="fn">is_palindrome</span>(s):
+    <span class="kw">return</span> s == s[::-<span class="nm">1</span>]   <span class="cm"># s[::-1] reverses string</span>
+
+<span class="cm"># Case insensitive version</span>
+<span class="kw">def</span> <span class="fn">is_palindrome</span>(s):
+    s = s.<span class="fn">lower</span>()
+    <span class="kw">return</span> s == s[::-<span class="nm">1</span>]</pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Count vowels</div>
+    <pre><span class="kw">def</span> <span class="fn">count_vowels</span>(s):
+    vowels = <span class="st">'aeiou'</span>
+    count = <span class="nm">0</span>
+    <span class="kw">for</span> char <span class="kw">in</span> s.<span class="fn">lower</span>():
+        <span class="kw">if</span> char <span class="kw">in</span> vowels:
+            count += <span class="nm">1</span>
+    <span class="kw">return</span> count   <span class="cm"># return AFTER loop, never inside</span>
+
+<span class="cm"># One-liner version</span>
+<span class="kw">def</span> <span class="fn">count_vowels</span>(s):
+    <span class="kw">return</span> <span class="fn">sum</span>(<span class="nm">1</span> <span class="kw">for</span> c <span class="kw">in</span> s.<span class="fn">lower</span>() <span class="kw">if</span> c <span class="kw">in</span> <span class="st">'aeiou'</span>)</pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Factorial</div>
+    <pre><span class="kw">def</span> <span class="fn">factorial</span>(n):
+    result = <span class="nm">1</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">1</span>, n+<span class="nm">1</span>):   <span class="cm"># n+1 to include n itself!</span>
+        result *= i
+    <span class="kw">return</span> result
+<span class="cm"># factorial(5) = 1×2×3×4×5 = 120</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Fibonacci sequence</div>
+    <pre><span class="kw">def</span> <span class="fn">fibonacci</span>(n):
+    a, b = <span class="nm">0</span>, <span class="nm">1</span>
+    result = []
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(n):
+        result.<span class="fn">append</span>(a)
+        a, b = b, a + b   <span class="cm"># swap in one line</span>
+    <span class="kw">return</span> result
+<span class="cm"># fibonacci(6) = [0,1,1,2,3,5]</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">FizzBuzz</div>
+    <pre><span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">1</span>, <span class="nm">101</span>):
+    <span class="kw">if</span> i % <span class="nm">15</span> == <span class="nm">0</span>:     <span class="cm"># check 15 first (both conditions)</span>
+        <span class="fn">print</span>(<span class="st">'FizzBuzz'</span>)
+    <span class="kw">elif</span> i % <span class="nm">3</span> == <span class="nm">0</span>:
+        <span class="fn">print</span>(<span class="st">'Fizz'</span>)
+    <span class="kw">elif</span> i % <span class="nm">5</span> == <span class="nm">0</span>:
+        <span class="fn">print</span>(<span class="st">'Buzz'</span>)
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(i)</pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Remove duplicates from list — preserve order</div>
+    <pre><span class="kw">def</span> <span class="fn">remove_duplicates</span>(lst):
+    seen = <span class="fn">set</span>()
+    result = []
+    <span class="kw">for</span> item <span class="kw">in</span> lst:
+        <span class="kw">if</span> item <span class="kw">not in</span> seen:
+            result.<span class="fn">append</span>(item)
+            seen.<span class="fn">add</span>(item)
+    <span class="kw">return</span> result
+<span class="cm"># [1,2,2,3,1] → [1,2,3]</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Reverse a string / list</div>
+    <pre><span class="cm"># String reverse</span>
+s[::-<span class="nm">1</span>]
+
+<span class="cm"># List reverse</span>
+lst[::-<span class="nm">1</span>]          <span class="cm"># returns new reversed list</span>
+lst.<span class="fn">reverse</span>()      <span class="cm"># reverses in-place, returns None</span>
+<span class="fn">list</span>(<span class="fn">reversed</span>(lst)) <span class="cm"># iterator version</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Check prime number</div>
+    <pre><span class="kw">def</span> <span class="fn">is_prime</span>(n):
+    <span class="kw">if</span> n < <span class="nm">2</span>:
+        <span class="kw">return</span> <span class="kw">False</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">2</span>, <span class="fn">int</span>(n**<span class="nm">0.5</span>) + <span class="nm">1</span>):  <span class="cm"># only check up to √n</span>
+        <span class="kw">if</span> n % i == <span class="nm">0</span>:
+            <span class="kw">return</span> <span class="kw">False</span>
+    <span class="kw">return</span> <span class="kw">True</span></pre>
+  </div>
+</div>
+
+<!-- LAMBDA -->
+<div id="lambda" class="section">
+  <div class="section-title">Lambda functions</div>
+  <div class="card">
+    <div class="card-title">What is lambda</div>
+    <div class="rule">A one-line anonymous function. No def, no return keyword — result is automatic.</div>
+    <pre><span class="cm"># Regular function</span>
+<span class="kw">def</span> <span class="fn">add</span>(x, y):
+    <span class="kw">return</span> x + y
+
+<span class="cm"># Same as lambda</span>
+add = <span class="kw">lambda</span> x, y: x + y
+
+<span class="cm"># Structure</span>
+<span class="kw">lambda</span> parameters: expression</pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Common lambda patterns</div>
+    <pre><span class="cm"># Basic math</span>
+square = <span class="kw">lambda</span> x: x * x
+cube   = <span class="kw">lambda</span> x: x ** <span class="nm">3</span>
+add    = <span class="kw">lambda</span> x, y: x + y
+
+<span class="cm"># Ternary inside lambda</span>
+check  = <span class="kw">lambda</span> x: <span class="st">'Even'</span> <span class="kw">if</span> x % <span class="nm">2</span> == <span class="nm">0</span> <span class="kw">else</span> <span class="st">'Odd'</span>
+larger = <span class="kw">lambda</span> x, y: x <span class="kw">if</span> x > y <span class="kw">else</span> y
+grade  = <span class="kw">lambda</span> s: <span class="st">'A'</span> <span class="kw">if</span> s >= <span class="nm">90</span> <span class="kw">else</span> (<span class="st">'B'</span> <span class="kw">if</span> s >= <span class="nm">75</span> <span class="kw">else</span> <span class="st">'C'</span>)
+
+<span class="cm"># Ternary structure: value_if_true if condition else value_if_false</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Lambda do's and don'ts</div>
+    <table class="ref">
+      <tr><th>❌ Don't</th><th>✅ Do</th></tr>
+      <tr><td>lambda x: if x > 5 return x</td><td>lambda x: x if x > 5 else 0</td></tr>
+      <tr><td>lambda x: x = x * 2</td><td>lambda x: x * 2</td></tr>
+      <tr><td>Complex multi-line logic in lambda</td><td>Use def for complex functions</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- MAP FILTER SORTED -->
+<div id="mapfilter" class="section">
+  <div class="section-title">map / filter / sorted</div>
+  <div class="card">
+    <div class="card-title">map — transform every element</div>
+    <pre>numbers = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>]
+
+<span class="fn">list</span>(<span class="fn">map</span>(<span class="kw">lambda</span> x: x * <span class="nm">2</span>, numbers))   <span class="cm"># [2,4,6,8,10]</span>
+<span class="fn">list</span>(<span class="fn">map</span>(<span class="kw">lambda</span> x: x ** <span class="nm">2</span>, numbers))  <span class="cm"># [1,4,9,16,25]</span>
+<span class="fn">list</span>(<span class="fn">map</span>(<span class="fn">str</span>, numbers))               <span class="cm"># ['1','2','3','4','5']</span>
+
+<span class="cm"># map returns iterator — wrap in list() to see result</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">filter — keep only matching elements</div>
+    <pre>numbers = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>]
+
+<span class="fn">list</span>(<span class="fn">filter</span>(<span class="kw">lambda</span> x: x % <span class="nm">2</span> == <span class="nm">0</span>, numbers))  <span class="cm"># [2,4,6] evens</span>
+<span class="fn">list</span>(<span class="fn">filter</span>(<span class="kw">lambda</span> x: x % <span class="nm">2</span> != <span class="nm">0</span>, numbers))  <span class="cm"># [1,3,5] odds</span>
+<span class="fn">list</span>(<span class="fn">filter</span>(<span class="kw">lambda</span> x: x > <span class="nm">3</span>, numbers))        <span class="cm"># [4,5,6]</span>
+
+<span class="cm"># filter returns iterator — wrap in list()</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">sorted — sort by custom condition</div>
+    <pre>students = [(<span class="st">"Raj"</span>, <span class="nm">92</span>), (<span class="st">"Priya"</span>, <span class="nm">78</span>), (<span class="st">"Nishanth"</span>, <span class="nm">85</span>)]
+
+<span class="cm"># Sort by score ascending (default)</span>
+<span class="fn">sorted</span>(students, key=<span class="kw">lambda</span> x: x[<span class="nm">1</span>])
+<span class="cm"># [("Priya",78), ("Nishanth",85), ("Raj",92)]</span>
+
+<span class="cm"># Sort by score descending</span>
+<span class="fn">sorted</span>(students, key=<span class="kw">lambda</span> x: x[<span class="nm">1</span>], reverse=<span class="kw">True</span>)
+
+<span class="cm"># Sort by name length</span>
+<span class="fn">sorted</span>(students, key=<span class="kw">lambda</span> x: <span class="fn">len</span>(x[<span class="nm">0</span>]))
+
+<span class="cm"># Sort by multiple keys — score desc, name asc</span>
+<span class="fn">sorted</span>(students, key=<span class="kw">lambda</span> x: (-x[<span class="nm">1</span>], x[<span class="nm">0</span>]))</pre>
+  </div>
+  <div class="card">
+    <div class="card-title">map vs filter vs sorted — differences</div>
+    <table class="ref">
+      <tr><th></th><th>map</th><th>filter</th><th>sorted</th></tr>
+      <tr><td>Purpose</td><td>Transform elements</td><td>Keep matching</td><td>Reorder</td></tr>
+      <tr><td>Output size</td><td>Same as input</td><td>Same or smaller</td><td>Same as input</td></tr>
+      <tr><td>Returns</td><td>iterator</td><td>iterator</td><td>new list</td></tr>
+      <tr><td>Lambda returns</td><td>new value</td><td>True/False</td><td>sort key</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- LIST COMPREHENSION -->
+<div id="listcomp" class="section">
+  <div class="section-title">List comprehension</div>
+  <div class="card">
+    <div class="card-title">Structure</div>
+    <pre>[expression <span class="kw">for</span> item <span class="kw">in</span> iterable <span class="kw">if</span> condition]
+<span class="cm"># condition is optional</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Common patterns</div>
+    <pre><span class="cm"># Square all numbers</span>
+squares = [x**<span class="nm">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">1</span>, <span class="nm">6</span>)]
+<span class="cm"># [1, 4, 9, 16, 25]</span>
+
+<span class="cm"># Filter evens only</span>
+evens = [x <span class="kw">for</span> x <span class="kw">in</span> numbers <span class="kw">if</span> x % <span class="nm">2</span> == <span class="nm">0</span>]
+
+<span class="cm"># Transform and filter together</span>
+result = [x**<span class="nm">2</span> <span class="kw">for</span> x <span class="kw">in</span> numbers <span class="kw">if</span> x > <span class="nm">3</span>]
+
+<span class="cm"># Uppercase all strings</span>
+upper = [s.<span class="fn">upper</span>() <span class="kw">for</span> s <span class="kw">in</span> words]
+
+<span class="cm"># Flatten nested list</span>
+flat = [item <span class="kw">for</span> sublist <span class="kw">in</span> nested <span class="kw">for</span> item <span class="kw">in</span> sublist]</pre>
+  </div>
+  <div class="card">
+    <div class="card-title">List comprehension vs map/filter</div>
+    <pre><span class="cm"># These do the same thing</span>
+<span class="fn">list</span>(<span class="fn">map</span>(<span class="kw">lambda</span> x: x*<span class="nm">2</span>, numbers))
+[x*<span class="nm">2</span> <span class="kw">for</span> x <span class="kw">in</span> numbers]   <span class="cm"># cleaner</span>
+
+<span class="fn">list</span>(<span class="fn">filter</span>(<span class="kw">lambda</span> x: x > <span class="nm">3</span>, numbers))
+[x <span class="kw">for</span> x <span class="kw">in</span> numbers <span class="kw">if</span> x > <span class="nm">3</span>]   <span class="cm"># cleaner</span>
+
+<span class="cm"># List comprehension is generally preferred — more readable</span></pre>
+  </div>
+</div>
+
+<!-- STRINGS -->
+<div id="strings" class="section">
+  <div class="section-title">String methods</div>
+  <div class="card">
+    <div class="card-title">Common string methods</div>
+    <table class="ref">
+      <tr><th>Method</th><th>What it does</th><th>Example</th></tr>
+      <tr><td>s.upper()</td><td>Uppercase</td><td>'hello' → 'HELLO'</td></tr>
+      <tr><td>s.lower()</td><td>Lowercase</td><td>'HELLO' → 'hello'</td></tr>
+      <tr><td>s.strip()</td><td>Remove whitespace both ends</td><td>' hi ' → 'hi'</td></tr>
+      <tr><td>s.split(',')</td><td>Split into list by delimiter</td><td>'a,b,c' → ['a','b','c']</td></tr>
+      <tr><td>','.join(lst)</td><td>Join list into string</td><td>['a','b'] → 'a,b'</td></tr>
+      <tr><td>s.replace(old, new)</td><td>Replace substring</td><td>'hello'.replace('l','r') → 'herro'</td></tr>
+      <tr><td>s.find(sub)</td><td>Index of substring (-1 if not found)</td><td>'hello'.find('ll') → 2</td></tr>
+      <tr><td>s.startswith('A')</td><td>Check prefix</td><td>Returns True/False</td></tr>
+      <tr><td>s.endswith('ing')</td><td>Check suffix</td><td>Returns True/False</td></tr>
+      <tr><td>s.count('l')</td><td>Count occurrences</td><td>'hello'.count('l') → 2</td></tr>
+      <tr><td>s.isdigit()</td><td>Check if all digits</td><td>'123'.isdigit() → True</td></tr>
+      <tr><td>len(s)</td><td>Length</td><td>len('hello') → 5</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">String slicing</div>
+    <pre>s = <span class="st">'hello'</span>
+s[<span class="nm">0</span>]      <span class="cm"># 'h' — first character</span>
+s[-<span class="nm">1</span>]     <span class="cm"># 'o' — last character</span>
+s[<span class="nm">1</span>:<span class="nm">3</span>]    <span class="cm"># 'el' — index 1 to 2</span>
+s[:<span class="nm">3</span>]     <span class="cm"># 'hel' — first 3</span>
+s[<span class="nm">2</span>:]     <span class="cm"># 'llo' — from index 2</span>
+s[::-<span class="nm">1</span>]   <span class="cm"># 'olleh' — reversed</span>
+s[::2]    <span class="cm"># 'hlo' — every 2nd character</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">f-strings — always use these</div>
+    <pre>name = <span class="st">'Nishanth'</span>
+score = <span class="nm">85</span>
+
+<span class="fn">print</span>(<span class="fn">f</span><span class="st">"Name: {name}, Score: {score}"</span>)
+<span class="fn">print</span>(<span class="fn">f</span><span class="st">"Score rounded: {score:.2f}"</span>)   <span class="cm"># 85.00</span>
+<span class="fn">print</span>(<span class="fn">f</span><span class="st">"{name.upper()}"</span>)               <span class="cm"># expressions work inside {}</span></pre>
+  </div>
+</div>
+
+<!-- DICTS -->
+<div id="dicts" class="section">
+  <div class="section-title">Dictionaries and Sets</div>
+  <div class="card">
+    <div class="card-title">Dictionary operations</div>
+    <pre>d = {<span class="st">'name'</span>: <span class="st">'Raj'</span>, <span class="st">'age'</span>: <span class="nm">25</span>}
+
+<span class="cm"># Access</span>
+d[<span class="st">'name'</span>]              <span class="cm"># 'Raj' — KeyError if missing</span>
+d.<span class="fn">get</span>(<span class="st">'name'</span>)          <span class="cm"># 'Raj' — None if missing</span>
+d.<span class="fn">get</span>(<span class="st">'city'</span>, <span class="st">'N/A'</span>)   <span class="cm"># 'N/A' — default if missing</span>
+
+<span class="cm"># Add/Update</span>
+d[<span class="st">'city'</span>] = <span class="st">'Chennai'</span>
+d.<span class="fn">update</span>({<span class="st">'city'</span>: <span class="st">'Bangalore'</span>})
+
+<span class="cm"># Check key</span>
+<span class="st">'name'</span> <span class="kw">in</span> d    <span class="cm"># True</span>
+<span class="st">'city'</span> <span class="kw">in</span> d    <span class="cm"># False</span>
+
+<span class="cm"># Loop</span>
+<span class="kw">for</span> key <span class="kw">in</span> d:              <span class="cm"># keys</span>
+<span class="kw">for</span> key, val <span class="kw">in</span> d.<span class="fn">items</span>():  <span class="cm"># key-value pairs</span>
+
+<span class="cm"># Count occurrences pattern</span>
+freq = {}
+<span class="kw">for</span> item <span class="kw">in</span> lst:
+    freq[item] = freq.<span class="fn">get</span>(item, <span class="nm">0</span>) + <span class="nm">1</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Set operations</div>
+    <pre>a = {<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>}
+b = {<span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>}
+
+a | b    <span class="cm"># {1,2,3,4,5,6} — union (all)</span>
+a & b    <span class="cm"># {3,4} — intersection (in both)</span>
+a - b    <span class="cm"># {1,2} — difference (in a not b)</span>
+a ^ b    <span class="cm"># {1,2,5,6} — symmetric difference</span>
+
+<span class="cm"># Remove duplicates from list</span>
+<span class="fn">list</span>(<span class="fn">set</span>([<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">2</span>,<span class="nm">3</span>]))  <span class="cm"># [1,2,3] — order not guaranteed</span></pre>
+  </div>
+</div>
+
+<!-- PANDAS -->
+<div id="pandas" class="section">
+  <div class="section-title">Pandas</div>
+  <div class="card">
+    <div class="card-title">Read and inspect</div>
+    <pre><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df = pd.<span class="fn">read_csv</span>(<span class="st">'file.csv'</span>)
+df.<span class="fn">head</span>(<span class="nm">5</span>)        <span class="cm"># first 5 rows</span>
+df.<span class="fn">tail</span>(<span class="nm">5</span>)        <span class="cm"># last 5 rows</span>
+df.<span class="fn">info</span>()         <span class="cm"># column types, non-null counts</span>
+df.<span class="fn">describe</span>()    <span class="cm"># stats: mean, std, min, max</span>
+df.<span class="fn">shape</span>         <span class="cm"># (rows, cols) tuple</span>
+df.<span class="fn">columns</span>       <span class="cm"># column names</span>
+df.<span class="fn">dtypes</span>        <span class="cm"># data type of each column</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Select columns and filter rows</div>
+    <pre><span class="cm"># Select one column</span>
+df[<span class="st">'salary'</span>]
+
+<span class="cm"># Select multiple columns</span>
+df[[<span class="st">'name'</span>, <span class="st">'salary'</span>, <span class="st">'dept'</span>]]
+
+<span class="cm"># Filter rows</span>
+df[df[<span class="st">'salary'</span>] > <span class="nm">50000</span>]
+df[df[<span class="st">'dept'</span>] == <span class="st">'IT'</span>]
+
+<span class="cm"># Multiple conditions</span>
+df[(df[<span class="st">'dept'</span>] == <span class="st">'IT'</span>) & (df[<span class="st">'salary'</span>] > <span class="nm">50000</span>)]
+df[(df[<span class="st">'dept'</span>] == <span class="st">'IT'</span>) | (df[<span class="st">'dept'</span>] == <span class="st">'HR'</span>)]
+
+<span class="cm"># loc — label-based</span>
+df.<span class="fn">loc</span>[df[<span class="st">'salary'</span>] > <span class="nm">50000</span>, [<span class="st">'name'</span>, <span class="st">'salary'</span>]]
+
+<span class="cm"># iloc — position-based</span>
+df.<span class="fn">iloc</span>[<span class="nm">0</span>:<span class="nm">5</span>, <span class="nm">0</span>:<span class="nm">3</span>]   <span class="cm"># first 5 rows, first 3 cols</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">NULL handling</div>
+    <pre>df.<span class="fn">isnull</span>().<span class="fn">sum</span>()          <span class="cm"># count nulls per column</span>
+df.<span class="fn">isnull</span>().<span class="fn">sum</span>().<span class="fn">sum</span>()   <span class="cm"># total nulls in dataframe</span>
+df.<span class="fn">dropna</span>()                <span class="cm"># remove rows with any null</span>
+df.<span class="fn">dropna</span>(subset=[<span class="st">'salary'</span>])  <span class="cm"># remove rows where salary is null</span>
+df.<span class="fn">fillna</span>(<span class="nm">0</span>)               <span class="cm"># replace all nulls with 0</span>
+df[<span class="st">'salary'</span>].<span class="fn">fillna</span>(df[<span class="st">'salary'</span>].<span class="fn">mean</span>())  <span class="cm"># fill with mean</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Group and aggregate</div>
+    <pre><span class="cm"># Single aggregation</span>
+df.<span class="fn">groupby</span>(<span class="st">'dept'</span>)[<span class="st">'salary'</span>].<span class="fn">mean</span>()
+df.<span class="fn">groupby</span>(<span class="st">'dept'</span>)[<span class="st">'salary'</span>].<span class="fn">sum</span>()
+df.<span class="fn">groupby</span>(<span class="st">'dept'</span>)[<span class="st">'emp_id'</span>].<span class="fn">count</span>()
+
+<span class="cm"># Multiple aggregations</span>
+df.<span class="fn">groupby</span>(<span class="st">'dept'</span>).<span class="fn">agg</span>({
+    <span class="st">'salary'</span>: [<span class="st">'mean'</span>, <span class="st">'max'</span>, <span class="st">'min'</span>],
+    <span class="st">'emp_id'</span>: <span class="st">'count'</span>
+})
+
+<span class="cm"># Group by multiple columns</span>
+df.<span class="fn">groupby</span>([<span class="st">'dept'</span>, <span class="st">'year'</span>])[<span class="st">'revenue'</span>].<span class="fn">sum</span>()</pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Merge (SQL JOIN equivalent)</div>
+    <pre><span class="cm"># Inner join</span>
+pd.<span class="fn">merge</span>(df1, df2, on=<span class="st">'emp_id'</span>, how=<span class="st">'inner'</span>)
+
+<span class="cm"># Left join</span>
+pd.<span class="fn">merge</span>(df1, df2, on=<span class="st">'emp_id'</span>, how=<span class="st">'left'</span>)
+
+<span class="cm"># Different column names</span>
+pd.<span class="fn">merge</span>(df1, df2, left_on=<span class="st">'emp_id'</span>, right_on=<span class="st">'employee_id'</span>)
+
+<span class="cm"># how options: 'inner', 'left', 'right', 'outer'</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Create and modify columns</div>
+    <pre><span class="cm"># New column</span>
+df[<span class="st">'total'</span>] = df[<span class="st">'salary'</span>] + df[<span class="st">'bonus'</span>]
+
+<span class="cm"># Apply lambda</span>
+df[<span class="st">'grade'</span>] = df[<span class="st">'score'</span>].<span class="fn">apply</span>(<span class="kw">lambda</span> x: <span class="st">'Pass'</span> <span class="kw">if</span> x >= <span class="nm">60</span> <span class="kw">else</span> <span class="st">'Fail'</span>)
+
+<span class="cm"># Apply to multiple columns</span>
+df[<span class="st">'full_name'</span>] = df.<span class="fn">apply</span>(<span class="kw">lambda</span> row: row[<span class="st">'first'</span>] + <span class="st">' '</span> + row[<span class="st">'last'</span>], axis=<span class="nm">1</span>)
+
+<span class="cm"># Map values</span>
+df[<span class="st">'dept_code'</span>] = df[<span class="st">'dept'</span>].<span class="fn">map</span>({<span class="st">'IT'</span>: <span class="nm">1</span>, <span class="st">'HR'</span>: <span class="nm">2</span>, <span class="st">'Sales'</span>: <span class="nm">3</span>})
+
+<span class="cm"># Sort</span>
+df.<span class="fn">sort_values</span>(<span class="st">'salary'</span>, ascending=<span class="kw">False</span>)
+df.<span class="fn">sort_values</span>([<span class="st">'dept'</span>, <span class="st">'salary'</span>], ascending=[<span class="kw">True</span>, <span class="kw">False</span>])</pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Useful shortcuts</div>
+    <pre>df[<span class="st">'salary'</span>].<span class="fn">value_counts</span>()       <span class="cm"># frequency count</span>
+df[<span class="st">'salary'</span>].<span class="fn">unique</span>()             <span class="cm"># unique values array</span>
+df[<span class="st">'salary'</span>].<span class="fn">nunique</span>()            <span class="cm"># count of unique values</span>
+df.<span class="fn">duplicated</span>()                   <span class="cm"># bool series of duplicate rows</span>
+df.<span class="fn">drop_duplicates</span>()              <span class="cm"># remove duplicate rows</span>
+df.<span class="fn">rename</span>(columns={<span class="st">'old'</span>: <span class="st">'new'</span>}) <span class="cm"># rename columns</span>
+df.<span class="fn">drop</span>(columns=[<span class="st">'col1'</span>])        <span class="cm"># remove column</span>
+df.<span class="fn">reset_index</span>(drop=<span class="kw">True</span>)        <span class="cm"># reset row index</span></pre>
+  </div>
+</div>
+
+<!-- NUMPY -->
+<div id="numpy" class="section">
+  <div class="section-title">Numpy</div>
+  <div class="card">
+    <div class="card-title">Array basics</div>
+    <pre><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+arr = np.<span class="fn">array</span>([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>])
+arr.<span class="fn">shape</span>     <span class="cm"># (5,) — dimensions</span>
+arr.<span class="fn">dtype</span>     <span class="cm"># int64 — data type</span>
+arr.<span class="fn">size</span>      <span class="cm"># 5 — total elements</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Stats operations</div>
+    <pre>np.<span class="fn">mean</span>(arr)    <span class="cm"># average</span>
+np.<span class="fn">sum</span>(arr)     <span class="cm"># sum</span>
+np.<span class="fn">max</span>(arr)     <span class="cm"># max value</span>
+np.<span class="fn">min</span>(arr)     <span class="cm"># min value</span>
+np.<span class="fn">std</span>(arr)     <span class="cm"># standard deviation</span>
+np.<span class="fn">median</span>(arr)  <span class="cm"># median</span>
+np.<span class="fn">unique</span>(arr)  <span class="cm"># unique values</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Boolean masking — filter arrays</div>
+    <pre>arr = np.<span class="fn">array</span>([<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>,<span class="nm">5</span>])
+
+arr[arr > <span class="nm">3</span>]           <span class="cm"># [4, 5]</span>
+arr[arr % <span class="nm">2</span> == <span class="nm">0</span>]      <span class="cm"># [2, 4] — evens</span>
+arr[(arr > <span class="nm">1</span>) & (arr < <span class="nm">4</span>)]  <span class="cm"># [2, 3]</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">np.where — conditional values</div>
+    <pre>arr = np.<span class="fn">array</span>([<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>,<span class="nm">5</span>])
+
+np.<span class="fn">where</span>(arr > <span class="nm">3</span>, <span class="st">'big'</span>, <span class="st">'small'</span>)
+<span class="cm"># ['small','small','small','big','big']</span>
+
+np.<span class="fn">where</span>(arr % <span class="nm">2</span> == <span class="nm">0</span>, arr, <span class="nm">0</span>)
+<span class="cm"># [0, 2, 0, 4, 0] — keep evens, replace odds with 0</span></pre>
+  </div>
+</div>
+
+<!-- AUTOMATION -->
+<div id="automation" class="section">
+  <div class="section-title">Python Automation — for the Automation Engineer role</div>
+  <div class="card">
+    <div class="card-title">File handling</div>
+    <pre><span class="cm"># Read file</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">'file.txt'</span>, <span class="st">'r'</span>) <span class="kw">as</span> f:
+    content = f.<span class="fn">read</span>()
+    lines = f.<span class="fn">readlines</span>()
+
+<span class="cm"># Write file</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">'output.txt'</span>, <span class="st">'w'</span>) <span class="kw">as</span> f:
+    f.<span class="fn">write</span>(<span class="st">'content here'</span>)
+
+<span class="cm"># Append</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="st">'file.txt'</span>, <span class="st">'a'</span>) <span class="kw">as</span> f:
+    f.<span class="fn">write</span>(<span class="st">'new line\n'</span>)
+
+<span class="cm"># Always use with — auto-closes file even if error</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Excel with openpyxl / pandas</div>
+    <pre><span class="cm"># Read Excel</span>
+df = pd.<span class="fn">read_excel</span>(<span class="st">'data.xlsx'</span>, sheet_name=<span class="st">'Sheet1'</span>)
+
+<span class="cm"># Write Excel</span>
+df.<span class="fn">to_excel</span>(<span class="st">'output.xlsx'</span>, index=<span class="kw">False</span>)
+
+<span class="cm"># Write multiple sheets</span>
+<span class="kw">with</span> pd.<span class="fn">ExcelWriter</span>(<span class="st">'output.xlsx'</span>) <span class="kw">as</span> writer:
+    df1.<span class="fn">to_excel</span>(writer, sheet_name=<span class="st">'Sales'</span>)
+    df2.<span class="fn">to_excel</span>(writer, sheet_name=<span class="st">'Summary'</span>)</pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Working with JSON / APIs</div>
+    <pre><span class="kw">import</span> json
+<span class="kw">import</span> requests
+
+<span class="cm"># Parse JSON</span>
+data = json.<span class="fn">loads</span>(json_string)
+json_str = json.<span class="fn">dumps</span>(data, indent=<span class="nm">2</span>)
+
+<span class="cm"># API call</span>
+response = requests.<span class="fn">get</span>(<span class="st">'https://api.example.com/data'</span>,
+    headers={<span class="st">'Authorization'</span>: <span class="st">'Bearer TOKEN'</span>})
+
+<span class="kw">if</span> response.<span class="fn">status_code</span> == <span class="nm">200</span>:
+    data = response.<span class="fn">json</span>()
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="fn">f</span><span class="st">"Error: {response.status_code}"</span>)</pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Error handling — try/except</div>
+    <pre><span class="kw">try</span>:
+    result = some_function()
+<span class="kw">except</span> <span class="fn">ValueError</span> <span class="kw">as</span> e:
+    <span class="fn">print</span>(<span class="fn">f</span><span class="st">"Value error: {e}"</span>)
+<span class="kw">except</span> <span class="fn">Exception</span> <span class="kw">as</span> e:
+    <span class="fn">print</span>(<span class="fn">f</span><span class="st">"Unexpected error: {e}"</span>)
+<span class="kw">finally</span>:
+    <span class="fn">print</span>(<span class="st">"Always runs — good for cleanup"</span>)</pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Your Green World Group automation — how to explain it</div>
+    <div class="rule">When asked about automation experience, describe your lead enrichment system:</div>
+    <pre><span class="cm">"I built a Python/Flask automation system that:</span>
+<span class="cm">1. Connected to Gmail via OAuth2 to read incoming leads</span>
+<span class="cm">2. Extracted contact details from email bodies and attachments</span>
+<span class="cm">3. Cross-referenced against Freshsales CRM via REST API</span>
+<span class="cm">4. Wrote enriched data back to Excel in-place</span>
+<span class="cm">   (preserving linked pivot tables and PowerPoint files)</span>
+<span class="cm">5. Ran incrementally to avoid reprocessing</span>
+<span class="cm">6. Had a Flask dashboard to monitor progress"</span>
+
+<span class="cm"># Key libraries used:</span>
+<span class="cm"># flask — web dashboard</span>
+<span class="cm"># google-auth — Gmail OAuth2</span>
+<span class="cm"># requests — Freshsales REST API</span>
+<span class="cm"># openpyxl — Excel read/write in-place</span>
+<span class="cm"># pandas — data manipulation</span></pre>
+  </div>
+</div>
+
+<!-- BEHAVIOR -->
+<div id="behavior" class="section">
+  <div class="section-title">How Python behaves — tricky things</div>
+  <div class="card">
+    <div class="card-title">Mutable vs immutable</div>
+    <pre><span class="cm"># Immutable: int, str, tuple — cannot change in-place</span>
+x = <span class="st">'hello'</span>
+x.<span class="fn">upper</span>()   <span class="cm"># doesn't change x!</span>
+x = x.<span class="fn">upper</span>()  <span class="cm"># must reassign</span>
+
+<span class="cm"># Mutable: list, dict, set — change in-place</span>
+lst = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>]
+lst.<span class="fn">append</span>(<span class="nm">4</span>)  <span class="cm"># modifies lst directly — no reassign needed</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Copy vs reference</div>
+    <pre><span class="cm"># Lists are reference types — assignment shares the same list</span>
+a = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>]
+b = a          <span class="cm"># b points to SAME list</span>
+b.<span class="fn">append</span>(<span class="nm">4</span>)   <span class="cm"># a is now [1,2,3,4] too!</span>
+
+<span class="cm"># To copy</span>
+b = a.<span class="fn">copy</span>()   <span class="cm"># shallow copy</span>
+b = a[:]       <span class="cm"># also shallow copy</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Integer division behavior</div>
+    <pre><span class="nm">10</span> / <span class="nm">3</span>     <span class="cm"># 3.333... — float division</span>
+<span class="nm">10</span> // <span class="nm">3</span>    <span class="cm"># 3 — floor division (truncates)</span>
+<span class="nm">10</span> % <span class="nm">3</span>     <span class="cm"># 1 — remainder</span>
+<span class="nm">-7</span> // <span class="nm">2</span>    <span class="cm"># -4 — floors toward negative infinity!</span>
+<span class="nm">-7</span> % <span class="nm">2</span>     <span class="cm"># 1 — not -1 (Python modulus always positive)</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">Truthy and falsy values</div>
+    <table class="ref">
+      <tr><th>Falsy (evaluates to False)</th><th>Truthy (evaluates to True)</th></tr>
+      <tr><td>0, 0.0</td><td>Any non-zero number</td></tr>
+      <tr><td>'' (empty string)</td><td>Any non-empty string</td></tr>
+      <tr><td>[] (empty list)</td><td>Any non-empty list</td></tr>
+      <tr><td>{} (empty dict)</td><td>Any non-empty dict</td></tr>
+      <tr><td>None</td><td>Everything else</td></tr>
+      <tr><td>False</td><td>True</td></tr>
+    </table>
+    <pre><span class="cm"># Use this for cleaner checks</span>
+<span class="kw">if not</span> my_list:   <span class="cm"># True when list is empty</span>
+<span class="kw">if</span> my_list:       <span class="cm"># True when list has elements</span></pre>
+  </div>
+  <div class="card">
+    <div class="card-title">range() behavior — common off-by-one mistakes</div>
+    <pre><span class="fn">range</span>(<span class="nm">5</span>)        <span class="cm"># 0,1,2,3,4 — NOT 5</span>
+<span class="fn">range</span>(<span class="nm">1</span>, <span class="nm">5</span>)     <span class="cm"># 1,2,3,4 — NOT 5</span>
+<span class="fn">range</span>(<span class="nm">1</span>, n+<span class="nm">1</span>)   <span class="cm"># 1 to n INCLUSIVE — add +1 to include n</span>
+<span class="fn">range</span>(<span class="nm">5</span>, <span class="nm">0</span>, -<span class="nm">1</span>) <span class="cm"># 5,4,3,2,1 — countdown</span></pre>
+  </div>
+</div>
+
+<!-- CHEAT SHEET -->
+<div id="cheat" class="section">
+  <div class="section-title">Python quick decision cheat sheet</div>
+  <div class="cheat">
+    <div class="decision"><span>"Transform every element"</span><strong>map() or list comp</strong></div>
+    <div class="decision"><span>"Keep matching elements"</span><strong>filter() or list comp with if</strong></div>
+    <div class="decision"><span>"Sort by condition"</span><strong>sorted(lst, key=lambda)</strong></div>
+    <div class="decision"><span>"One line function"</span><strong>lambda x: expression</strong></div>
+    <div class="decision"><span>"If this else that inline"</span><strong>val_true if cond else val_false</strong></div>
+    <div class="decision"><span>"Count occurrences"</span><strong>dict with .get(key,0)+1</strong></div>
+    <div class="decision"><span>"Remove duplicates"</span><strong>set() or seen set pattern</strong></div>
+    <div class="decision"><span>"Reverse string/list"</span><strong>s[::-1]</strong></div>
+    <div class="decision"><span>"Last element"</span><strong>lst[-1]</strong></div>
+    <div class="decision"><span>"Check key in dict"</span><strong>'key' in d</strong></div>
+    <div class="decision"><span>"Safe dict access"</span><strong>d.get('key', default)</strong></div>
+    <div class="decision"><span>"Join list to string"</span><strong>','.join(lst)</strong></div>
+    <div class="decision"><span>"Split string to list"</span><strong>s.split(',')</strong></div>
+    <div class="decision"><span>"Format string"</span><strong>f"text {variable}"</strong></div>
+    <div class="decision"><span>"Group dataframe"</span><strong>df.groupby().agg()</strong></div>
+    <div class="decision"><span>"Join dataframes"</span><strong>pd.merge(df1, df2, on=, how=)</strong></div>
+    <div class="decision"><span>"Replace NULLs"</span><strong>df.fillna(value)</strong></div>
+    <div class="decision"><span>"Apply function to column"</span><strong>df['col'].apply(lambda x:)</strong></div>
+    <div class="decision"><span>"Filter array numpy"</span><strong>arr[arr > value]</strong></div>
+    <div class="decision"><span>"Conditional numpy"</span><strong>np.where(cond, true, false)</strong></div>
+    <div class="decision"><span>"Read 1 to n inclusive"</span><strong>range(1, n+1)</strong></div>
+    <div class="decision"><span>"Safe error handling"</span><strong>try / except / finally</strong></div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="card-title">Common error causes — check these first</div>
+    <table class="ref">
+      <tr><th>Error</th><th>Most likely cause</th><th>Fix</th></tr>
+      <tr><td>IndentationError</td><td>Wrong spaces / mixed tabs</td><td>Use 4 spaces always</td></tr>
+      <tr><td>NameError</td><td>Variable used before defined</td><td>Define before use</td></tr>
+      <tr><td>TypeError</td><td>Wrong type operation (str+int)</td><td>Convert with str() or int()</td></tr>
+      <tr><td>IndexError</td><td>List index too large</td><td>Check len() or use -1</td></tr>
+      <tr><td>KeyError</td><td>Dict key doesn't exist</td><td>Use .get() instead</td></tr>
+      <tr><td>Wrong result, no error</td><td>return inside loop</td><td>return AFTER loop</td></tr>
+      <tr><td>= in if condition</td><td>Assignment not comparison</td><td>Use == not =</td></tr>
+    </table>
+  </div>
+</div>
+
+</div>
+<script>
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
